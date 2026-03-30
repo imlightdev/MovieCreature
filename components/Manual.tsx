@@ -6,7 +6,7 @@ export default function Manual() {
       <section className="manual-section">
         <h2 className="manual-heading">
           <span className="manual-heading-num">01</span>
-          Request movie
+          How to request a movie
         </h2>
         <p className="manual-desc">
           To request a movie, use the IMDB page link of the movie you want to request.
@@ -25,29 +25,35 @@ export default function Manual() {
       <section className="manual-section">
         <h2 className="manual-heading">
           <span className="manual-heading-num">02</span>
-          Setting conductor
+          How to set conductor
         </h2>
         <p className="manual-desc">
-          Setting conductor by id
+          Only a user with the conductor role can use this command
+        </p>
+        <p className="manual-desc">
+          Set conductor by id
         </p>
         <div className="command-block">
           <div className="command-row">
             <span className="command-label">Command</span>
-            <code className="command-code">!sc -id &lt;id&gt; </code>
+            <code className="command-code">!sc -id &lt;id1,id2,id3&gt; </code>
           </div>
         </div>
         <p className="manual-note">
           You can enter multiple IDs separated by commas.
         </p>
         <p className="manual-desc">
-          Setting conductor by title
+          Set conductor by imdb id
         </p>
         <div className="command-block">
           <div className="command-row">
             <span className="command-label">Command</span>
-            <code className="command-code">!sc -t &lt;title&gt;</code>
+            <code className="command-code">!sc -imdb &lt;imdbId1,imdbId2,imdbId3&gt;</code>
           </div>
         </div>
+        <p className="manual-note">
+          You can enter multiple IDs separated by commas.
+        </p>
       </section>
 
       <section className="manual-section">
@@ -56,21 +62,12 @@ export default function Manual() {
           Cancel a request
         </h2>
         <p className="manual-desc">
-          To cancel a request by id
+          To cancel a request in pending
         </p>
         <div className="command-block">
           <div className="command-row">
             <span className="command-label">Command</span>
-            <code className="command-code">!mc &lt;id&gt;</code>
-          </div>
-        </div>
-        <p className="manual-desc">
-          To cancel a request by title
-        </p>
-        <div className="command-block">
-          <div className="command-row">
-            <span className="command-label">Command</span>
-            <code className="command-code">!mc &lt;title&gt;</code>
+            <code className="command-code">!mc</code>
           </div>
         </div>
       </section>

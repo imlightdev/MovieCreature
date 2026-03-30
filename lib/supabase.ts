@@ -52,7 +52,9 @@ export function enrichMovies(
 ): MovieReqEnriched[] {
   const usersMap = new Map(users.map((u) => [u.id, u.name]));
   const conductorsMap = new Map(conductors.map((u) => [u.id, u.name]));
-  const res = movies.map((m) => {
+  const res = movies
+  .filter((m) => m.f_streamed !== 2)
+  .map((m) => {
     return {
       ...m,
       user_name: usersMap.get(m.user_id) ?? "—",

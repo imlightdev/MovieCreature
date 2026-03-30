@@ -26,14 +26,14 @@ export default function TabLayout({ initialUsers, initialConductors, initialMovi
           >
             Movie Requests
           </button>
-          {/*
+          
           <button
             className={`tab-btn ${activeTab === "manual" ? "active" : ""}`}
             onClick={() => setActiveTab("manual")}
           >
             Manual
           </button>
-          */}
+          
         </div>
       </nav>
 
