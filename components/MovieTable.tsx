@@ -1,7 +1,7 @@
-import { MovieReqEnriched } from "@/lib/supabase";
+import { MovieEnriched } from "@/lib/supabase";
 
 type Props = {
-  movies: MovieReqEnriched[];
+  movies: MovieEnriched[];
 };
 
 function formatDate(iso: string) {
@@ -20,27 +20,21 @@ export default function MovieTable({ movies }: Props) {
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Requested by</th>
-            <th>Conductor</th>
-            <th>Status</th>
+            <th>User</th>
+            <th>Channel</th>
             <th>Date</th>
             <th>IMDB</th>
           </tr>
         </thead>
         <tbody>
           {movies.map((m, i) => (
-            <tr key={m.id} className={m.f_streamed ? "streamed" : ""}>
+            <tr key={m.id}>
               <td className="col-num">{m.id}</td>
               <td className="col-title">
                 {m.title || <span className="no-title">N/D</span>}
               </td>
               <td className="col-user">{m.user_name}</td>
-              <td className="col-conductor">{m.conductor_name}</td>
-              <td>
-                <span className={`badge ${m.f_streamed ? "badge-done" : "badge-pending"}`}>
-                  {m.f_streamed ? "Completed" : "Pending"}
-                </span>
-              </td>
+              <td className="col-conductor">{m.channel_name}</td>
               <td className="col-date">{formatDate(m.created_at)}</td>
               <td>
                 <a

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useDashboard } from "@/lib/useDashboard";
-import type { Conductor, MovieReqEnriched, User } from "@/lib/supabase";
+import type { Channel, MovieEnriched, User } from "@/lib/supabase";
 import StatCard from "@/components/StatCard";
 import MovieTable from "@/components/MovieTable";
 import MovieFilters, {
@@ -12,40 +12,39 @@ import MovieFilters, {
 
 type Props = {
   initialUsers: User[];
-  initialConductors: Conductor[];
-  initialMovies: MovieReqEnriched[];
+  initialChannels: Channel[];
+  initialMovies: MovieEnriched[];
 };
 
 export default function Dashboard({
   initialUsers,
-  initialConductors,
+  initialChannels,
   initialMovies,
 }: Props) {
   const { users, movies, connected, lastUpdate } = useDashboard({
     users: initialUsers,
-    conductors: initialConductors,
+    channels: initialChannels,
     movies: initialMovies,
   });
 
-  // Stato filtri
+  // State filter
   const [filters, setFilters] = useState<TMovieFilters>({
     users: [],
-    conductors: [],
-    titles: [],
-     status: [],
+    channels: [],
+    titles: []
   });
 
   // Options for the select filters (derived from live data)
   const userOptions: FilterOption[] = useMemo(
-    () => users.map((u) => ({ value: String(u.id), label: u.name })),
+    () => users.map((u) => ({ value: String(u.id), label: u.username })),
     [users]
   );
 
-  const conductorOptions: FilterOption[] = useMemo(
+  const channelOptions: FilterOption[] = useMemo(
     () =>
       Array.from(
         new Map(
-          movies.map((m) => [m.conductor_id, m.conductor_name])
+          movies.map((m) => [m.channel_id, m.channel_name])
         ).entries()
       ).map(([id, name]) => ({ value: String(id), label: name })),
     [movies]
@@ -63,11 +62,6 @@ export default function Dashboard({
     [movies]
   );
 
-  const statusOptions: FilterOption[] = [
-    { value: "1", label: "Completed" },
-    { value: "0", label: "Pending" },
-  ];
-
   // Filters
   const filteredMovies = useMemo(() => {
     return movies.filter((m) => {
@@ -77,8 +71,8 @@ export default function Dashboard({
       )
         return false;
       if (
-        filters.conductors.length > 0 &&
-        !filters.conductors.some((f) => f.value === String(m.conductor_id))
+        filters.channels.length > 0 &&
+        !filters.channels.some((f) => f.value === String(m.channel_id))
       )
         return false;
       if (
@@ -86,19 +80,9 @@ export default function Dashboard({
         !filters.titles.some((f) => f.value === String(m.id))
       )
         return false;
-      if (
-        filters.status.length > 0 &&
-        !filters.status.some((f) => f.value === String(m.f_streamed))
-      )
-        return false;
       return true;
     });
   }, [movies, filters]);
-
-  // Stats (sempre sul totale, non sui filtrati)
-  const streamedCount = movies.filter((m) => m.f_streamed).length;
-  const pendingCount = movies.length - streamedCount;
-  const activeUsers = users.filter((u) => u.enabled).length;
 
   const movieCounts: Record<number, number> = {};
   for (const m of movies) {
@@ -122,20 +106,12 @@ export default function Dashboard({
 
         {/* Movie table */}
         <section className="section">
-          <div className="section-header">
-            <h2>
-              <span className="section-num">01</span>
-              Movie Requests
-            </h2>
-            <span className="section-count">{movies.length} entries</span>
-          </div>
 
           {/* Filters */}
           <MovieFilters
             userOptions={userOptions}
-            conductorOptions={conductorOptions}
+            channelOptions={channelOptions}
             titleOptions={titleOptions}
-            statusOptions={statusOptions}
             filters={filters}
             onChange={setFilters}
             activeCount={filteredMovies.length}

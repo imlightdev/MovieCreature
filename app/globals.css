@@ -64,7 +64,7 @@ main {
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.875rem;
 }
 
@@ -94,13 +94,13 @@ header {
 }
 
 .wordmark-serif {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 1.1rem;
   color: var(--gold-light);
 }
 
 .wordmark-mono {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -156,7 +156,7 @@ header {
 }
 
 .section-header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 1.1rem;
   font-weight: 400;
   color: var(--text);
@@ -166,14 +166,14 @@ header {
 }
 
 .section-num {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.65rem;
   color: var(--gold);
   letter-spacing: 0.05em;
 }
 
 .section-count {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.7rem;
   color: var(--text-dim);
 }
@@ -186,7 +186,7 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.68rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
@@ -242,7 +242,7 @@ footer {
 .stat-card:hover { border-color: rgba(218, 165, 90, 0.2); }
 
 .stat-value {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 2.5rem;
   color: var(--gold-light);
   line-height: 1;
@@ -257,7 +257,7 @@ footer {
 }
 
 .stat-sub {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.75rem;
   color: var(--streamed);
   margin-top: 0.25rem;
@@ -305,7 +305,7 @@ footer {
 .table-wrapper tbody tr.streamed td { opacity: 0.6; }
 
 .table-wrapper .col-num {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.75rem;
   color: var(--text-dim);
   width: 36px;
@@ -328,7 +328,7 @@ footer {
 }
 
 .table-wrapper .col-date {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.78rem;
   color: var(--text-muted);
   white-space: nowrap;
@@ -358,7 +358,7 @@ footer {
 }
 
 .imdb-link {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.75rem;
   color: var(--gold);
   display: inline-flex;
@@ -398,7 +398,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.7rem;
   color: var(--gold);
   flex-shrink: 0;
@@ -423,7 +423,7 @@ footer {
 .user-count {
   font-size: 0.7rem;
   color: var(--text-dim);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
 }
 
 .user-status-dot {
@@ -467,7 +467,7 @@ footer {
   border: none;
   border-bottom: 2px solid transparent;
   color: var(--text-dim);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Ubuntu', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;

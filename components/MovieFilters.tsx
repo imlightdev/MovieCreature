@@ -6,16 +6,14 @@ export type FilterOption = { value: string; label: string };
 
 export type MovieFilters = {
   users: FilterOption[];
-  conductors: FilterOption[];
+  channels: FilterOption[];
   titles: FilterOption[],
-  status: FilterOption[];
 };
 
 type Props = {
   userOptions: FilterOption[];
-  conductorOptions: FilterOption[];
+  channelOptions: FilterOption[];
   titleOptions: FilterOption[];
-  statusOptions: FilterOption[];
   filters: MovieFilters;
   onChange: (filters: MovieFilters) => void;
   activeCount: number;
@@ -132,9 +130,8 @@ function buildStyles(accent = false): StylesConfig<FilterOption, true> {
 
 export default function MovieFilters({
   userOptions,
-  conductorOptions,
+  channelOptions,
   titleOptions,
-  statusOptions,
   filters,
   onChange,
   activeCount,
@@ -142,13 +139,12 @@ export default function MovieFilters({
 }: Props) {
   const hasActiveFilters =
     filters.users.length > 0 ||
-    filters.conductors.length > 0 ||
-    filters.titles.length > 0 ||
-    filters.status.length > 0 
+    filters.channels.length > 0 ||
+    filters.titles.length > 0
     ;
 
   function handleReset() {
-    onChange({ users: [], conductors: [], titles: [], status: [] });
+    onChange({ users: [], channels: [], titles: []});
   }
 
   return (
@@ -171,20 +167,20 @@ export default function MovieFilters({
           />
         </div>
 
-        {/* Conductor */}
+        {/* Channel */}
         <div className="filter-col">
-          <label className="filter-label">Conductor</label>
+          <label className="filter-label">Channels</label>
           <Select
             isMulti
-            options={conductorOptions}
-            value={filters.conductors}
+            options={channelOptions}
+            value={filters.channels}
             onChange={(v: MultiValue<FilterOption>) =>
-              onChange({ ...filters, conductors: [...v] })
+              onChange({ ...filters, channels: [...v] })
             }
-            placeholder="All conductors..."
+            placeholder="All channels..."
             styles={buildStyles()}
             noOptionsMessage={() => "No results found"}
-            instanceId="filter-conductors"
+            instanceId="filter-channels"
           />
         </div>
 
@@ -202,23 +198,6 @@ export default function MovieFilters({
             styles={buildStyles(true)}
             noOptionsMessage={() => "No results found"}
             instanceId="filter-titles"
-          />
-        </div>
-
-        {/* Status */}
-        <div className="filter-col">
-          <label className="filter-label">Status</label>
-          <Select
-            isMulti
-            options={statusOptions}
-            value={filters.status}
-                        onChange={(v: MultiValue<FilterOption>) =>
-              onChange({ ...filters, status: [...v] })
-            }
-            placeholder="All status..."
-            styles={buildStyles(true)}
-            noOptionsMessage={() => "No results found"}
-            instanceId="filter-status"
           />
         </div>
       </div>

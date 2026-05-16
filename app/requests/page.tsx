@@ -7,7 +7,7 @@ export default async function Home() {
   let error: string | null = null;
 
   try {
-    data = await fetchDashboardData(2);
+    data = await fetchDashboardData(StreamedEnum.PENDING);
   } catch (e) {
     error = (e as Error).message;
   }

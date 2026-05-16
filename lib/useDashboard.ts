@@ -4,42 +4,42 @@ import { useEffect, useRef, useState } from "react";
 import {
   supabase,
   enrichMovies,
-  type Conductor,
-  type MovieReq,
-  type MovieReqEnriched,
+  type Channel,
+  type Movie,
+  type MovieEnriched,
   type User,
 } from "@/lib/supabase";
 
 export type DashboardState = {
   users: User[];
-  conductors: Conductor[];
-  movies: MovieReqEnriched[];
+  channels: Channel[];
+  movies: MovieEnriched[];
   connected: boolean;
   lastUpdate: Date | null;
 };
 
 type InitialData = {
   users: User[];
-  conductors: Conductor[];
-  movies: MovieReqEnriched[];
+  channels: Channel[];
+  movies: MovieEnriched[];
 };
 
 export function useDashboard(initial: InitialData): DashboardState {
   const [users, setUsers] = useState<User[]>(initial.users);
-  const [conductors, setConductors] = useState<Conductor[]>(initial.conductors);
-  const [rawMovies, setRawMovies] = useState<MovieReq[]>(
+  const [channels, setChannels] = useState<Channel[]>(initial.channels);
+  const [rawMovies, setRawMovies] = useState<Movie[]>(
     // strip enriched fields to get back raw movies
-    initial.movies.map(({ user_name, conductor_name, ...m }) => m)
+    initial.movies.map(({ user_name, channel_name, ...m }) => m)
   );
   const [connected, setConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   // Keep refs so realtime callbacks always see fresh state
   const usersRef = useRef(users);
-  const conductorsRef = useRef(conductors);
+  const channelsRef = useRef(channels);
   const rawMoviesRef = useRef(rawMovies);
   useEffect(() => { usersRef.current = users; }, [users]);
-  useEffect(() => { conductorsRef.current = conductors; }, [conductors]);
+  useEffect(() => { channelsRef.current = channels; }, [channels]);
   useEffect(() => { rawMoviesRef.current = rawMovies; }, [rawMovies]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function useDashboard(initial: InitialData): DashboardState {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "users" },
         (payload) => {
-          setUsers((prev) => [...prev, payload.new as User].sort((a, b) => a.name.localeCompare(b.name)));
+          setUsers((prev) => [...prev, payload.new as User].sort((a, b) => a.username.localeCompare(b.username)));
           setLastUpdate(new Date());
         }
       )
@@ -74,22 +74,22 @@ export function useDashboard(initial: InitialData): DashboardState {
         }
       )
 
-      // ── CONDUCTORS ─────────────────────────────────────────
+      // ── CHANNELS ─────────────────────────────────────────
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "conductors" },
+        { event: "INSERT", schema: "public", table: "channels" },
         (payload) => {
-          setConductors((prev) => [...prev, payload.new as Conductor]);
+          setChannels((prev) => [...prev, payload.new as Channel]);
           setLastUpdate(new Date());
         }
       )
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "conductors" },
+        { event: "UPDATE", schema: "public", table: "channels" },
         (payload) => {
-          setConductors((prev) =>
+          setChannels((prev) =>
             prev.map((c) =>
-              c.id === (payload.new as Conductor).id ? (payload.new as Conductor) : c
+              c.id === (payload.new as Channel).id ? (payload.new as Channel) : c
             )
           );
           setLastUpdate(new Date());
@@ -97,19 +97,19 @@ export function useDashboard(initial: InitialData): DashboardState {
       )
       .on(
         "postgres_changes",
-        { event: "DELETE", schema: "public", table: "conductors" },
+        { event: "DELETE", schema: "public", table: "channels" },
         (payload) => {
-          setConductors((prev) => prev.filter((c) => c.id !== (payload.old as Conductor).id));
+          setChannels((prev) => prev.filter((c) => c.id !== (payload.old as Channel).id));
           setLastUpdate(new Date());
         }
       )
 
-      // ── MOVIE_REQ ──────────────────────────────────────────
+      // ── MOVIES ──────────────────────────────────────────
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "movie_req" },
+        { event: "INSERT", schema: "public", table: "movies" },
         (payload) => {
-          setRawMovies((prev) => [payload.new as MovieReq, ...prev]);
+          setRawMovies((prev) => [payload.new as Movie, ...prev]);
           setLastUpdate(new Date());
         }
       )
@@ -119,7 +119,7 @@ export function useDashboard(initial: InitialData): DashboardState {
         (payload) => {
           setRawMovies((prev) =>
             prev.map((m) =>
-              m.id === (payload.new as MovieReq).id ? (payload.new as MovieReq) : m
+              m.id === (payload.new as Movie).id ? (payload.new as Movie) : m
             )
           );
           setLastUpdate(new Date());
@@ -129,7 +129,7 @@ export function useDashboard(initial: InitialData): DashboardState {
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "movie_req" },
         (payload) => {
-          setRawMovies((prev) => prev.filter((m) => m.id !== (payload.old as MovieReq).id));
+          setRawMovies((prev) => prev.filter((m) => m.id !== (payload.old as Movie).id));
           setLastUpdate(new Date());
         }
       )
@@ -144,7 +144,7 @@ export function useDashboard(initial: InitialData): DashboardState {
   }, []);
 
   // Re-enrich every time raw data or lookup tables change
-  const movies = enrichMovies(rawMovies, users, conductors);
+  const movies = enrichMovies(rawMovies, users, channels);
 
-  return { users, conductors, movies, connected, lastUpdate };
+  return { users, channels, movies, connected, lastUpdate };
 }
